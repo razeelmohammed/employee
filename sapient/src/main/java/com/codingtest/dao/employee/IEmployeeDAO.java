@@ -10,6 +10,8 @@ public interface IEmployeeDAO {
 	Integer save(List<Employee> employees);
 
 	List<EmployeeDTO> getAllEmployees();
+	
+	List<EmployeeDTO> getEmployeesByReporting(Integer supervisorId);
 
 	List<EmployeeDTO> getEmployeesBasedOnPlace(String place);
 

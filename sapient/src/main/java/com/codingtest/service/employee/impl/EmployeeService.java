@@ -76,9 +76,14 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public List<EmployeeDTO> getReportingStructure(Integer supervisorId) {
+	public List<EmployeeDTO> getReportingStructureUsingQuery(Integer supervisorId) {
+		return employeeDAO.getEmployeesByReporting(supervisorId);
+	}
+	
+	@Override
+	public List<EmployeeDTO> getReportingStructureUsingStream(Integer supervisorId) {
 
-		// Merge streams
+// Merge streams
 //		List<EmployeeDTO> employees = employeeDAO.getAllEmployees().stream()
 //				.filter(p -> p.getEmployeeId() == supervisorId)
 //				.flatMap(p -> {   
@@ -90,6 +95,8 @@ public class EmployeeService implements IEmployeeService {
 //						.filter(q -> q.getSupervisorId() == m.getEmployeeId()))  )
 //				.collect(Collectors.toList());
 
+		
+		
 		//Recursion required to find the tree
 		List<EmployeeDTO> parent = employeeDAO.getAllEmployees().stream().filter(p -> p.getEmployeeId() == supervisorId)
 				.collect(Collectors.toList());

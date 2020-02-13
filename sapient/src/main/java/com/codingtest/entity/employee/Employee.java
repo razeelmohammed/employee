@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,35 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
+
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "getEmployeesByReportingOrder", query = "WITH RECURSIVE T(PK_EMPLOYEE_ID,VC_TITLE,VC_NAME,VC_BUSINESS_UNIT,VC_PLACE,VC_COMPETENCIES,"
+				+ "N_SALARY, PK_SUPERVISOR_ID,VC_SUPERVISOR_NAME ) AS ("
+				+ "SELECT PK_EMPLOYEE_ID,VC_TITLE,VC_NAME,VC_BUSINESS_UNIT,VC_PLACE,VC_COMPETENCIES,"
+				+ "N_SALARY,0 AS PK_SUPERVISOR_ID,'' AS VC_SUPERVISOR_NAME FROM EMPLOYEE WHERE PK_EMPLOYEE_ID = :supervisorId "
+				+ "UNION ALL "
+				+ "SELECT EE.PK_EMPLOYEE_ID,EE.VC_TITLE,EE.VC_NAME,EE.VC_BUSINESS_UNIT,EE.VC_PLACE,EE.VC_COMPETENCIES,EE.N_SALARY,"
+				+ "T.PK_EMPLOYEE_ID AS PK_SUPERVISOR_ID,T.VC_NAME AS VC_SUPERVISOR_NAME "
+				+ "FROM T  INNER JOIN EMPLOYEE  EE ON T.PK_EMPLOYEE_ID  = EE.FK_SUPERVISOR_ID ) "
+				+ "SELECT PK_EMPLOYEE_ID AS employeeId,VC_TITLE AS title,VC_NAME AS name,"
+				+ "VC_BUSINESS_UNIT AS businessUnit,VC_PLACE AS place,VC_COMPETENCIES AS competencies,"
+				+ "N_SALARY AS salary,PK_SUPERVISOR_ID AS supervisorId,VC_SUPERVISOR_NAME AS supervisorname FROM T", 
+				resultSetMapping = "EmployeeResult") })
+@SqlResultSetMapping(name = "EmployeeResult", classes = {
+		@ConstructorResult(targetClass = com.codingtest.dto.employee.EmployeeDTO.class, columns = {
+				@ColumnResult(name = "employeeId", type = Integer.class),
+				@ColumnResult(name = "name", type = String.class), @ColumnResult(name = "title", type = String.class),
+				@ColumnResult(name = "businessUnit", type = String.class),
+				@ColumnResult(name = "place", type = String.class),
+				@ColumnResult(name = "supervisorId", type = Integer.class),
+				@ColumnResult(name = "supervisorname", type = String.class),
+				@ColumnResult(name = "competencies", type = String.class),
+				@ColumnResult(name = "salary", type = Double.class) }) })
 @Entity
 @Table(name = "Employee")
 public class Employee {

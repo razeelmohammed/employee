@@ -37,7 +37,7 @@ public class EmployeeController implements IEmployeeController {
 
 	@Override
 	public ResponseEntity<StandardResponse> getReportingStructure(Integer supervisorid) {
-		return ResponseWrapper.getResponseEntityForGet(employeeService.getReportingStructure(supervisorid));
+		return ResponseWrapper.getResponseEntityForGet(employeeService.getReportingStructureUsingQuery(supervisorid));
 	}
 
 }

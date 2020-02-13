@@ -14,7 +14,9 @@ public interface IEmployeeService {
 
 	List<EmployeeDTO> getEmployeesBasedOnPlace(String place);
 	
-	List<EmployeeDTO> getReportingStructure(Integer supervisorId);
+	List<EmployeeDTO> getReportingStructureUsingStream(Integer supervisorId);
+	
+	List<EmployeeDTO> getReportingStructureUsingQuery(Integer supervisorId);
 
 	String getSalaryRangeBasedOnTitle(String title);
 
