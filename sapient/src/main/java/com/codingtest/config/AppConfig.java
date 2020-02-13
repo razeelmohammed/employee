@@ -13,16 +13,9 @@ import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 import static org.hibernate.cfg.AvailableSettings.URL;
 import static org.hibernate.cfg.AvailableSettings.USER;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -36,9 +29,6 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.codingtest.dto.employee.EmployeeDTO;
-import com.codingtest.service.employee.IEmployeeService;
-
 @Configuration
 @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = { HibernateJpaAutoConfiguration.class })
@@ -47,9 +37,6 @@ import com.codingtest.service.employee.IEmployeeService;
 public class AppConfig {
 
 	private @Autowired Environment env;
-
-	@Autowired
-	IEmployeeService employeeService;
 
 	@Bean
 	public LocalSessionFactoryBean getSessionFactory() {
@@ -90,41 +77,6 @@ public class AppConfig {
 		transactionManager.setSessionFactory(getSessionFactory().getObject());
 		return transactionManager;
 	}
-
-	@PostConstruct
-	private void postConstruct() {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		URL resource = classLoader.getResource("employee.csv");
-		if (resource == null) {
-			throw new IllegalArgumentException("file is not found!");
-		} else {
-			try {
-				employeeService.save(employeeService.getEmployeeRecords(new File(resource.getFile())));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@PreDestroy
-	public void onDestroy() throws Exception {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		URL resource = classLoader.getResource("employee.csv");
-		List<EmployeeDTO> employeeDTOs = employeeService.getAllEmployees();
-		if (resource == null) {
-			throw new IllegalArgumentException("file is not found!");
-		} else {
-			try {
-				File csvOutputFile = new File(resource.getFile());
-				try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
-					employeeDTOs.stream().forEach(pw::println);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	
+ 
 
 }
