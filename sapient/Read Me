@@ -1,18 +1,22 @@
-
-1.	Read a CSV file (as part of the class path) at application startup, store each record(Employee record) in an in-memory cache solution (choose any caching solution that u are comfortable with). Each CSV record is an employee record, with below columns:
+1.	Read a CSV file (as part of the class path) at application startup, store each record(Employee record) 
+in an in-memory cache solution (choose any caching solution that u are comfortable with). 
+Each CSV record is an employee record, with below columns:
 
 EmployeeID | EmployeeName | Title | BusinessUnit | Place | SupervisorID | Competencies | Salary
  
-2.	Create a /employee/place/{place}/salary/{percentage} PUT endpoint that will update the in-memory cache by increasing their salary by percentage(percentage path param) for employees that have place matching with place path param.(Use java 8 for transformation)
+2.	Create a /employee/place/{place}/salary/{percentage} PUT endpoint that will update the in-memory 
+cache by increasing their salary by percentage(percentage path param) for employees that have place 
+matching with place path param.(Use java 8 for transformation)
  
 3.	The end point will return the refreshed list of employee record
 
-4.	Create a GET endpoint to return the nested list of all supervisees of a given supervisor e.g. consider D, C report into B, B report into A, if I query for A, I should get A->B->C,D
+4.	Create a GET endpoint to return the nested list of all supervisees of a given supervisor 
+e.g. consider D, C report into B, B report into A, if I query for A, I should get A->B->C,D
 
 5.	Create an endpoint to return the total salary of 
-a.	given BU
-b.	given supervisor
-c.	given place
+	a.	given BU
+	b.	given supervisor
+	c.	given place
 
 6.	Create an endpoint to return the list of employees for a given place
 
@@ -23,6 +27,3 @@ c.	given place
 9.	The code must be modular/follow design principles(solid)
  
 10.	It must have Swagger and Unit tests.
- 
-Please push your code to your PSCode once done. 
-
