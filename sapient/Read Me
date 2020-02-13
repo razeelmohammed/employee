@@ -1,3 +1,5 @@
+Problem:
+
 1.	Read a CSV file (as part of the class path) at application startup, store each record(Employee record) 
 in an in-memory cache solution (choose any caching solution that u are comfortable with). 
 Each CSV record is an employee record, with below columns:
@@ -27,3 +29,33 @@ e.g. consider D, C report into B, B report into A, if I query for A, I should ge
 9.	The code must be modular/follow design principles(solid)
  
 10.	It must have Swagger and Unit tests.
+
+Solution:
+
+Point 1: 
+
+	Used @PostConstruct to read data from csv and store in H2.
+
+Point 2,3,4,5,6,7:
+
+	Api for Point 2 and 3 : (put) http://localhost:8080/employee/{place}/Delhi/salary/{percentage}
+
+	Api for Point 4 : (get) http://localhost:8080/employee/getsubordiates/{supervisorid}
+
+	Api for Point 5 : (get) http://localhost:8080/employee/{param}/{value}
+
+	Api for Point 6 : (get) http://localhost:8080/employee/{place}
+	
+	Api for Point 7 : (get) http://localhost:8080/employee/range/{title}
+	
+Point 8:
+	(post) http://localhost:8080/actuator/shutdown Used @PreDestroy to persist the data in h2 to csv
+	
+Point 9: 
+	Follows SOLID principles
+	
+Point 10:
+	Swagger UI: http://localhost:8080/swagger-ui.html#/employee-controller
+	API tests in : test/java/com/codingtest/controller/employee/EmployeeControllerTest.java
+	
+
