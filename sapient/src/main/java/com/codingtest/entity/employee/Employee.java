@@ -20,7 +20,8 @@ import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 
 @NamedNativeQueries({
-		@NamedNativeQuery(name = "getEmployeesByReportingOrder", query = "WITH RECURSIVE T(PK_EMPLOYEE_ID,VC_TITLE,VC_NAME,VC_BUSINESS_UNIT,VC_PLACE,VC_COMPETENCIES,"
+		@NamedNativeQuery(name = "getEmployeesByReportingOrder", 
+				query = "WITH RECURSIVE T(PK_EMPLOYEE_ID,VC_TITLE,VC_NAME,VC_BUSINESS_UNIT,VC_PLACE,VC_COMPETENCIES,"
 				+ "N_SALARY, PK_SUPERVISOR_ID,VC_SUPERVISOR_NAME ) AS ("
 				+ "SELECT PK_EMPLOYEE_ID,VC_TITLE,VC_NAME,VC_BUSINESS_UNIT,VC_PLACE,VC_COMPETENCIES,"
 				+ "N_SALARY,0 AS PK_SUPERVISOR_ID,'' AS VC_SUPERVISOR_NAME FROM EMPLOYEE WHERE PK_EMPLOYEE_ID = :supervisorId "
