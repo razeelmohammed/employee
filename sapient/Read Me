@@ -32,6 +32,9 @@ e.g. consider D, C report into B, B report into A, if I query for A, I should ge
 
 Solution:
 
+	H2 URL : http://localhost:8080/h2-console/
+	H2 Connection String : jdbc:h2:mem:sapient;DB_CLOSE_ON_EXIT=FALSE
+
 Point 1: 
 
 	Used @PostConstruct to read data from csv and store in H2.
