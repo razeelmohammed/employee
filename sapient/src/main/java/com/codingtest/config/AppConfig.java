@@ -13,9 +13,7 @@ import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 import static org.hibernate.cfg.AvailableSettings.URL;
 import static org.hibernate.cfg.AvailableSettings.USER;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -101,7 +99,7 @@ public class AppConfig {
 			throw new IllegalArgumentException("file is not found!");
 		} else {
 			try {
-				employeeService.save(getEmployeeRecords(new File(resource.getFile())));
+				employeeService.save(employeeService.getEmployeeRecords(new File(resource.getFile())));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -127,23 +125,6 @@ public class AppConfig {
 		}
 	}
 
-	private static List<EmployeeDTO> getEmployeeRecords(File file) throws IOException {
-		List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
-		if (file == null)
-			return employeeDTOs;
-		try (FileReader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				String[] columns = line.split(",");
-				EmployeeDTO employee = new EmployeeDTO(Integer.parseInt(columns[0]), columns[1], columns[2], columns[3],
-						columns[4], columns[5].isEmpty() ? null : new EmployeeDTO(Integer.parseInt(columns[5])),
-						columns[6], Double.parseDouble(columns[7]));
-				employeeDTOs.add(employee); 
-			}
-			return employeeDTOs;
-		} catch (Exception e) {
-			return employeeDTOs;
-		}
-	}
+	
 
 }

@@ -1,5 +1,10 @@
 package com.codingtest.service.employee.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,7 +84,27 @@ public class EmployeeService implements IEmployeeService {
 	public List<EmployeeDTO> getReportingStructureUsingQuery(Integer supervisorId) {
 		return employeeDAO.getEmployeesByReporting(supervisorId);
 	}
-	
+
+	@Override
+	public List<EmployeeDTO> getEmployeeRecords(File file) throws IOException {
+		List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
+		if (file == null)
+			return employeeDTOs;
+		try (FileReader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] columns = line.split(",");
+				EmployeeDTO employee = new EmployeeDTO(Integer.parseInt(columns[0]), columns[1], columns[2], columns[3],
+						columns[4], columns[5].isEmpty() ? null : new EmployeeDTO(Integer.parseInt(columns[5])),
+						columns[6], Double.parseDouble(columns[7]));
+				employeeDTOs.add(employee);
+			}
+			return employeeDTOs;
+		} catch (Exception e) {
+			return employeeDTOs;
+		}
+	}
+
 	@Override
 	public List<EmployeeDTO> getReportingStructureUsingStream(Integer supervisorId) {
 
@@ -95,9 +120,7 @@ public class EmployeeService implements IEmployeeService {
 //						.filter(q -> q.getSupervisorId() == m.getEmployeeId()))  )
 //				.collect(Collectors.toList());
 
-		
-		
-		//Recursion required to find the tree
+		// Recursion required to find the tree
 		List<EmployeeDTO> parent = employeeDAO.getAllEmployees().stream().filter(p -> p.getEmployeeId() == supervisorId)
 				.collect(Collectors.toList());
 		List<EmployeeDTO> mergedList = this.getEmployeeStream(employeeDAO.getAllEmployees(), supervisorId, parent);
