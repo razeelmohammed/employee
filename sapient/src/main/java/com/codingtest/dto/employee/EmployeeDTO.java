@@ -33,6 +33,19 @@ public class EmployeeDTO {
 		this.supervisor = supervisor;
 		this.salary = salary;
 	}
+	
+	public EmployeeDTO(Integer employeeId, String name, String title, String businessUnit, String place,
+			Integer supervisorId,String supervisorname,String competencies, Double salary) {
+		this.employeeId = employeeId;
+		this.title = title;
+		this.name = name;
+		this.businessUnit = businessUnit;
+		this.place = place;
+		this.competencies = competencies; 
+		this.supervisorId = supervisorId; 
+		this.supervisorname = supervisorname; 
+		this.salary = salary;
+	}
 
 	public Integer getEmployeeId() {
 		return employeeId;

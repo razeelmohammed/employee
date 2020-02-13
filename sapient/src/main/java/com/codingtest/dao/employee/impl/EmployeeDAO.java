@@ -2,10 +2,10 @@ package com.codingtest.dao.employee.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,6 @@ import com.codingtest.dto.employee.EmployeeDTO;
 import com.codingtest.entity.employee.Employee;
 
 @Repository
-@SuppressWarnings({ "deprecation", "unchecked" })
 public class EmployeeDAO implements IEmployeeDAO {
 
 	@Autowired
@@ -31,30 +30,25 @@ public class EmployeeDAO implements IEmployeeDAO {
 
 	@Override
 	public List<EmployeeDTO> getAllEmployees() {
-		String hql = "SELECT E.employeeId AS employeeId,E.title AS title,E.name AS name,E.businessUnit AS businessUnit, "
-				+ "E.place AS place, E.competencies AS competencies,COALESCE(S.employeeId,0) AS supervisorId,"
-				+ "S.name AS supervisorname,E.salary AS salary "
+		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,"
+				+ "E.name, E.title,E.businessUnit, " + "E.place, COALESCE(S.employeeId,0),"
+				+ "S.name,E.competencies,E.salary) "
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE E.active = true";
-
-		// Transformer used for quick implementation. From and above Hibernate 5 the
-		// results can be retrieved as streams.
-		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql)
-				.setResultTransformer(Transformers.aliasToBean(EmployeeDTO.class)).list();
+		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class)
+				.stream().map(o -> o).collect(Collectors.toList());
 		return employees.size() > 0 ? employees : new ArrayList<EmployeeDTO>();
 	}
 
 	@Override
 	public List<EmployeeDTO> getEmployeesBasedOnPlace(String place) {
-		String hql = "SELECT E.employeeId AS employeeId,E.title AS title,E.name AS name,E.businessUnit AS businessUnit, "
-				+ "E.place AS place, E.competencies AS competencies,COALESCE(S.employeeId,0) AS supervisorId,"
-				+ "S.name AS supervisorname,E.salary AS salary "
+		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,"
+				+ "E.name, E.title,E.businessUnit, " + "E.place, COALESCE(S.employeeId,0),"
+				+ "S.name,E.competencies,E.salary) "
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE "
 				+ "E.place =:place AND E.active = true";
 
-		// Transformer used for quick implementation. From and above Hibernate 5 the
-		// results can be retrieved as streams.
-		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql).setParameter("place", place)
-				.setResultTransformer(Transformers.aliasToBean(EmployeeDTO.class)).list();
+		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class)
+				.setParameter("place", place).stream().map(o -> o).collect(Collectors.toList());
 		return employees.size() > 0 ? employees : new ArrayList<EmployeeDTO>();
 	}
 
