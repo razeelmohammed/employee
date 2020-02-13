@@ -34,8 +34,6 @@ public class EmployeeDAO implements IEmployeeDAO {
 				+ "E.name, E.title,E.businessUnit, " + "E.place, COALESCE(S.employeeId,0),"
 				+ "S.name,E.competencies,E.salary) "
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE E.active = true";
-		//List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class).stream()
-		//		.map(o -> o).collect(Collectors.toList());
 		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class).list();
 		return employees.size() > 0 ? employees : new ArrayList<EmployeeDTO>();
 	}
@@ -48,8 +46,6 @@ public class EmployeeDAO implements IEmployeeDAO {
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE "
 				+ "E.place =:place AND E.active = true";
 
-		//List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class)
-		//		.setParameter("place", place).stream().map(o -> o).collect(Collectors.toList());
 		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class)
 				.setParameter("place", place).list();
 		return employees.size() > 0 ? employees : new ArrayList<EmployeeDTO>();
