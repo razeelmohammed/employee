@@ -29,9 +29,8 @@ public class EmployeeDAO implements IEmployeeDAO {
 
 	@Override
 	public List<EmployeeDTO> getAllEmployees() {
-		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,"
-				+ "E.name, E.title,E.businessUnit, " + "E.place, COALESCE(S.employeeId,0),"
-				+ "S.name,E.competencies,E.salary) "
+		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,E.name,E.title,"
+				+ "E.businessUnit,E.place, COALESCE(S.employeeId,0),S.name,E.competencies,E.salary) "
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE E.active = true";
 		List<EmployeeDTO> employees = sessionFactory.getCurrentSession().createQuery(hql, EmployeeDTO.class).list();
 		return employees.size() > 0 ? employees : new ArrayList<EmployeeDTO>();
@@ -39,9 +38,8 @@ public class EmployeeDAO implements IEmployeeDAO {
 
 	@Override
 	public List<EmployeeDTO> getEmployeesBasedOnPlace(String place) {
-		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,"
-				+ "E.name, E.title,E.businessUnit, " + "E.place, COALESCE(S.employeeId,0),"
-				+ "S.name,E.competencies,E.salary) "
+		String hql = "SELECT new com.codingtest.dto.employee.EmployeeDTO(E.employeeId,E.name, E.title,"
+				+ "E.businessUnit,E.place, COALESCE(S.employeeId,0),S.name,E.competencies,E.salary) "
 				+ "FROM Employee E LEFT JOIN E.supervisor S ON E.supervisor.employeeId = S.employeeId WHERE "
 				+ "E.place =:place AND E.active = true";
 
