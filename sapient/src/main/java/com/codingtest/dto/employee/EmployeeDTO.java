@@ -1,5 +1,7 @@
 package com.codingtest.dto.employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class EmployeeDTO {
 
 	private Integer employeeId;
@@ -8,6 +10,7 @@ public class EmployeeDTO {
 	private String businessUnit;
 	private String place;
 	private String competencies;
+	@JsonIgnore
 	private EmployeeDTO supervisor;
 	private Double salary;
 	private Boolean active;

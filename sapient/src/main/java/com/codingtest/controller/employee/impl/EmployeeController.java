@@ -1,5 +1,6 @@
 package com.codingtest.controller.employee.impl;
 
+import com.codingtest.controller.employee.IEmployeeControllerOpenApi3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,7 @@ import com.codingtest.helper.StandardResponse;
 import com.codingtest.service.employee.IEmployeeService;
 
 @RestController
-public class EmployeeController implements IEmployeeController {
+public class EmployeeController implements IEmployeeControllerOpenApi3 {
 
 	@Autowired
 	IEmployeeService employeeService;
